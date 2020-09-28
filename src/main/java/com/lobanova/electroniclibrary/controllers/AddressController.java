@@ -1,6 +1,6 @@
 package com.lobanova.electroniclibrary.controllers;
 
-import com.lobanova.electroniclibrary.entities.Address;
+import com.lobanova.electroniclibrary.dtos.AddressDto;
 import com.lobanova.electroniclibrary.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,22 +25,22 @@ public class AddressController {
     }
 
     @GetMapping(path ="/get-all")
-    public List<Address> getAllAddresss() {
+    public List<AddressDto> getAllAddresses() {
         return addressService.getAllAddresses();
     }
 
     @GetMapping(path = "{id}")
-    public Address getAddressById(@PathVariable("id") Integer id) {
-        return addressService.getAddressById(id);
+    public AddressDto getAddressById(@PathVariable("id") Integer id) {
+        return addressService.getAddressDtoById(id);
     }
 
     @PostMapping
-    public Address addAddress(@RequestBody Address newAddress) {
+    public AddressDto addAddress(@RequestBody AddressDto newAddress) {
         return newAddress != null && addressService.addAddress(newAddress) ? newAddress : null;
     }
 
     @PutMapping
-    public Address updateAddress(@RequestBody Address updatedAddress) {
+    public AddressDto updateAddress(@RequestBody AddressDto updatedAddress) {
         return addressService.updateAddress(updatedAddress) ? updatedAddress : null;
     }
 

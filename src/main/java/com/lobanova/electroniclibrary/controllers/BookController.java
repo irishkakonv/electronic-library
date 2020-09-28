@@ -1,6 +1,6 @@
 package com.lobanova.electroniclibrary.controllers;
 
-import com.lobanova.electroniclibrary.DataBase;
+import com.lobanova.electroniclibrary.dtos.BookDto;
 import com.lobanova.electroniclibrary.entities.Book;
 import com.lobanova.electroniclibrary.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +26,22 @@ public class BookController {
     }
 
     @GetMapping(path ="/get-all")
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
+    public List<BookDto> getAllBooks() {
+        return bookService.getAllBookDtos();
     }
 
     @GetMapping(path = "{id}")
-    public Book getBookById(@PathVariable("id") Integer id) {
-        return bookService.getBookById(id);
+    public BookDto getBookById(@PathVariable("id") Integer id) {
+        return bookService.getBookDtoById(id);
     }
 
     @PostMapping
-    public Book addBook(@RequestBody Book newBook) {
+    public BookDto addBook(@RequestBody BookDto newBook) {
         return newBook != null && bookService.addBook(newBook) ? newBook : null;
     }
 
     @PutMapping
-    public Book updateBook(@RequestBody Book updatedBook) {
+    public BookDto updateBook(@RequestBody BookDto updatedBook) {
         return bookService.updateBook(updatedBook) ? updatedBook : null;
     }
 

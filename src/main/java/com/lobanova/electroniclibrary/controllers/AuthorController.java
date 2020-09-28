@@ -1,5 +1,6 @@
 package com.lobanova.electroniclibrary.controllers;
 
+import com.lobanova.electroniclibrary.dtos.AuthorDto;
 import com.lobanova.electroniclibrary.entities.Author;
 import com.lobanova.electroniclibrary.entities.Book;
 import com.lobanova.electroniclibrary.services.AuthorService;
@@ -26,22 +27,22 @@ public class AuthorController {
     }
 
     @GetMapping(path ="/get-all")
-    public List<Author> getAllAuthors() {
-        return authorService.getAllAuthors();
+    public List<AuthorDto> getAllAuthors() {
+        return authorService.getAllAuthorDtos();
     }
 
     @GetMapping(path = "{id}")
-    public Author getAuthorById(@PathVariable("id") Integer id) {
-        return authorService.getAuthorById(id);
+    public AuthorDto getAuthorDtoById(@PathVariable("id") Integer id) {
+        return authorService.getAuthorDtoById(id);
     }
 
     @PostMapping
-    public Author addBook(@RequestBody Author newAuthor) {
+    public AuthorDto addAuthor(@RequestBody AuthorDto newAuthor) {
         return newAuthor != null && authorService.addAuthor(newAuthor) ? newAuthor : null;
     }
 
     @PutMapping
-    public Author updateBook(@RequestBody Author updatedAuthor) {
+    public AuthorDto updateBook(@RequestBody AuthorDto updatedAuthor) {
         return authorService.updateAuthor(updatedAuthor) ? updatedAuthor : null;
     }
 

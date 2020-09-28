@@ -1,48 +1,58 @@
 package com.lobanova.electroniclibrary.services;
 
 import com.lobanova.electroniclibrary.DataBase;
+import com.lobanova.electroniclibrary.dtos.UserDto;
 import com.lobanova.electroniclibrary.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
-    private final CommentService commentService;
-    private final AddressService addressService;
-
-    @Autowired
-    public UserService(CommentService commentService, AddressService addressService) {
-        this.commentService = commentService;
-        this.addressService = addressService;
+    private UserDto convertUserToUserDto(User user) {
+        return UserDto.builder().id(user.getId()).name(user.getName()).surname(user.getSurname()).address(user.getAddress()).comments(user.getComments()).type(user.getType()).build();
     }
 
-    public List<User> getAllUsers() {
+    private User convertUserDtoToUser(UserDto user) {
+        return User.builder().id(user.getId()).name(user.getName()).surname(user.getSurname()).address(user.getAddress()).comments(user.getComments()).type(user.getType()).build();
+    }
+
+    private List<User> getAllUsers() {
         return DataBase.users;
     }
 
-    public User getUserById(Integer id) {
+    public List<UserDto> getAllUserDtos() {
+        return getAllUsers().stream().map(this::convertUserToUserDto).collect(Collectors.toList());
+    }
+
+    public UserDto getUserDtoById(Integer id) {
+        User user = getUserById(id);
+        return user!= null ? convertUserToUserDto(user) : null;
+    }
+
+    private User getUserById(Integer id) {
         Optional<User> oldUser =  getAllUsers().stream().filter(user -> user.getId().equals(id)).findFirst();
         return oldUser.orElse(null);
     }
 
-    public boolean addUser(User user) {
-        return getAllUsers().add(user);
+    public boolean addUser(UserDto user) {
+        return getAllUsers().add(convertUserDtoToUser(user));
     }
 
-    public boolean updateUser (User user) {
+    public boolean updateUser (UserDto userDto) {
         boolean isUpdated = false;
-        User oldUser = getUserById(user.getId());
+        User oldUser = getUserById(userDto.getId());
+        User newUser = convertUserDtoToUser(userDto);
         List<User> users = getAllUsers();
         if (oldUser == null) {
-            users.add(user);
+            users.add(newUser);
             isUpdated = true;
-        } else if (!oldUser.equals(user)) {
+        } else if (!oldUser.equals(newUser)) {
             users.remove(users.indexOf(oldUser));
-            users.add(user);
+            users.add(newUser);
             isUpdated = true;
         }
         return isUpdated;

@@ -1,5 +1,6 @@
 package com.lobanova.electroniclibrary.controllers;
 
+import com.lobanova.electroniclibrary.dtos.CommentDto;
 import com.lobanova.electroniclibrary.entities.Comment;
 import com.lobanova.electroniclibrary.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +26,22 @@ public class CommentController {
     }
 
     @GetMapping(path ="/get-all")
-    public List<Comment> getAllComments() {
-        return commentService.getAllComments();
+    public List<CommentDto> getAllComments() {
+        return commentService.getAllCommentDtos();
     }
 
     @GetMapping(path = "{id}")
-    public Comment getCommentById(@PathVariable("id") Integer id) {
-        return commentService.getCommentById(id);
+    public CommentDto getCommentById(@PathVariable("id") Integer id) {
+        return commentService.getCommentDtoById(id);
     }
 
     @PostMapping
-    public Comment addComment(@RequestBody Comment newComment) {
+    public CommentDto addComment(@RequestBody CommentDto newComment) {
         return newComment != null && commentService.addComment(newComment) ? newComment : null;
     }
 
     @PutMapping
-    public Comment updateComment(@RequestBody Comment updatedComment) {
+    public CommentDto updateComment(@RequestBody CommentDto updatedComment) {
         return commentService.updateComment(updatedComment) ? updatedComment : null;
     }
 

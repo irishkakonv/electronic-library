@@ -1,5 +1,6 @@
 package com.lobanova.electroniclibrary.controllers;
 
+import com.lobanova.electroniclibrary.dtos.UserDto;
 import com.lobanova.electroniclibrary.entities.Author;
 import com.lobanova.electroniclibrary.entities.User;
 import com.lobanova.electroniclibrary.services.UserService;
@@ -26,22 +27,22 @@ public class UserController {
     }
 
     @GetMapping(path ="/get-all")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUserDtos();
     }
 
     @GetMapping(path = "{id}")
-    public User getUserById(@PathVariable("id") Integer id) {
-        return userService.getUserById(id);
+    public UserDto getUserById(@PathVariable("id") Integer id) {
+        return userService.getUserDtoById(id);
     }
 
     @PostMapping
-    public User addUser(@RequestBody User newUser) {
+    public UserDto addUser(@RequestBody UserDto newUser) {
         return newUser != null && userService.addUser(newUser) ? newUser : null;
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User updatedUser) {
+    public UserDto updateUser(@RequestBody UserDto updatedUser) {
         return userService.updateUser(updatedUser) ? updatedUser : null;
     }
 

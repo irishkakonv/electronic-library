@@ -49,7 +49,6 @@ public class DataBase {
                 .address(getUser1Address())
                 .comments(comments)
                 .type(PersonType.USER)
-                .address(getUser1Address())
                 .build();
     }
 
