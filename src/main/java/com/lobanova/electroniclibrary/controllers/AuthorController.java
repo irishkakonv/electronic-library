@@ -19,14 +19,14 @@ import java.util.List;
 @RequestMapping("authors")
 public class AuthorController {
 
-    @Autowired
     private final AuthorService authorService;
 
+    @Autowired
     public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
     }
 
-    @GetMapping(path ="/get-all")
+    @GetMapping
     public List<AuthorDto> getAllAuthors() {
         return authorService.getAllAuthorDtos();
     }

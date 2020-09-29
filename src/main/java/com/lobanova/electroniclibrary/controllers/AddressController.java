@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/addresses")
 public class AddressController {
 
     private final AddressService addressService;
@@ -24,7 +24,7 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    @GetMapping(path ="/get-all")
+    @GetMapping
     public List<AddressDto> getAllAddresses() {
         return addressService.getAllAddresses();
     }
