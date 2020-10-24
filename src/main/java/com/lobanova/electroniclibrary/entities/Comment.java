@@ -1,22 +1,42 @@
 package com.lobanova.electroniclibrary.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-@Getter
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import java.util.Date;
+
+@Entity
+@Table(name = "comments")
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Comment {
+@Getter
+@EqualsAndHashCode(callSuper = true)
+public class Comment extends EntityBase {
 
-    private Integer id;
+    @Column(name = "rate", nullable = false)
     private Integer rate;
+
+    @Column(name = "content")
     private String content;
-    private String data;
+
+    @Column(name = "data")
+    @CreationTimestamp
+    private Date data;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id")
     private Book book;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User authorComment;
 }
+
+

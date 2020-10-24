@@ -1,20 +1,20 @@
 package com.lobanova.electroniclibrary.dtos;
 
-import com.lobanova.electroniclibrary.entities.Book;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentDto {
 
-    private Integer id;
+    private Long id;
     private Integer rate;
     private String content;
-    private String data;
-    private Book book;
+    private Long bookId;
+    private Long authorId;
 
 }

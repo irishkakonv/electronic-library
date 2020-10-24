@@ -1,29 +1,51 @@
 package com.lobanova.electroniclibrary.entities;
 
 import com.lobanova.electroniclibrary.enums.Genre;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
+@Entity
+@Table(name = "books")
 @Setter
-@Builder
-public class Book {
+@Getter
+@EqualsAndHashCode(exclude = {"authors", "description", "content", "image", "comments"}, callSuper = true)
+public class Book extends EntityBase {
 
-    private Integer id;
+    @Column(name = "name", nullable = false)
     private String name;
-    private List<Author> authors;
+
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
+    private Set<Author> authors = new HashSet<>();
+
+    @Column(name = "genre", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Genre genre;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "page_count")
     private int pageCount;
-    private int commonRate;
+
+    @Column(name = "content")
     private byte[] content;
+
+    @Column(name = "image")
     private byte[] image;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    private Set<Comment> comments = new HashSet<>();
 
 }

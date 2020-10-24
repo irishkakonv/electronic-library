@@ -1,24 +1,34 @@
 package com.lobanova.electroniclibrary.entities;
 
-import com.lobanova.electroniclibrary.enums.PersonType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.Set;
+
+@Entity
+@Table(name = "authors")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true, exclude = "books")
 public class Author extends Person {
 
-    private String deathDate;
-    private String shortBiography;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "book_author",
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> books;
 
-    @Builder
-    public Author(int id, String name, String surname, PersonType type) {
-        super(id, name, surname, type);
-    }
+    @Column(name = "biography")
+    private String shortBiography;
 }
