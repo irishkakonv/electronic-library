@@ -22,7 +22,7 @@ public class AddressController {
     private final AddressService addressService;
 
     @Autowired
-    public AddressController(AddressServiceImpl addressService) {
+    public AddressController(AddressService addressService) {
         this.addressService = addressService;
     }
 

@@ -11,8 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 @Entity
 @Table(name = "comments")
 @Setter
@@ -28,7 +27,7 @@ public class Comment extends EntityBase {
 
     @Column(name = "data")
     @CreationTimestamp
-    private Date data;
+    private LocalDate data;
 
     @ManyToOne
     @JoinColumn(name = "book_id")
