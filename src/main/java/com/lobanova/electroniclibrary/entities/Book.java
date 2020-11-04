@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,7 +27,7 @@ public class Book extends EntityBase {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Author> authors = new HashSet<>();
 
     @Column(name = "genre", nullable = false)
@@ -48,4 +49,12 @@ public class Book extends EntityBase {
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private Set<Comment> comments = new HashSet<>();
 
+    public void addAuthor(Author author) {
+        this.authors.add(author);
+        author.getBooks().add(this);
+    }
+
+    private void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
 }

@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -24,11 +25,11 @@ public class CommentServiceImpl implements CommentService{
 
     @Autowired
 
-    public CommentServiceImpl(ConversionService conversionService, CommentRepository commentRepository) {
+    public CommentServiceImpl(ConversionService conversionService,
+                              CommentRepository commentRepository) {
         this.conversionService = conversionService;
         this.commentRepository = commentRepository;
     }
-
 
     @Override
     public CommentDto create(CommentDto dto) {
@@ -57,8 +58,9 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public Set<CommentDto> getAll() {
-        Set<Comment> comments = new HashSet<>((Collection<? extends Comment>) commentRepository.findAll());
-        return comments.stream().map(comment -> conversionService.convert(comment, CommentDto.class)).collect(Collectors.toSet());
+        return StreamSupport.stream(commentRepository.findAll().spliterator(), false)
+                .map(comment -> conversionService.convert(comment, CommentDto.class))
+                .collect(Collectors.toSet());
     }
 
     @Override

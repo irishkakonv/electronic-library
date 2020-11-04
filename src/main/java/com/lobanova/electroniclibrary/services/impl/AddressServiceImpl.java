@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -21,7 +22,8 @@ public class AddressServiceImpl implements AddressService{
     private final ConversionService conversionService;
 
     @Autowired
-    public AddressServiceImpl(AddressRepository addressRepository, ConversionService conversionService) {
+    public AddressServiceImpl(AddressRepository addressRepository,
+                              ConversionService conversionService) {
         this.addressRepository = addressRepository;
         this.conversionService = conversionService;
     }
@@ -53,18 +55,15 @@ public class AddressServiceImpl implements AddressService{
 
     @Override
     public Set<AddressDto> getAll() {
-        List<Address> addresses = (List<Address>) addressRepository.findAll();
-        return addresses.stream().map(author -> conversionService.convert(author, AddressDto.class)).collect(Collectors.toSet());
+        return StreamSupport.stream(addressRepository.findAll().spliterator(), false)
+                .map(author -> conversionService.convert(author, AddressDto.class))
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Address getOrCreateAddress(String country, String city) {
         Address address = addressRepository.findByCountryAndCity(country, city);
-        if (address != null) {
-            return address;
-        } else {
-            return addressRepository.save(new Address(country, city));
-        }
+        return address != null ? address : addressRepository.save(new Address(country, city));
     }
 }
 

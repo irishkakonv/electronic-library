@@ -16,7 +16,7 @@ public class UserToUserDtoConverter implements Converter<User, UserDto> {
                 .country(user.getAddress() != null ? user.getAddress().getCountry() : null)
                 .city(user.getAddress() != null ? user.getAddress().getCity() : null)
                 .type(user.getType().getName())
-                .login(user.getUserLogin())
+                .login(user.getUserName())
                 .build();
     }
 }

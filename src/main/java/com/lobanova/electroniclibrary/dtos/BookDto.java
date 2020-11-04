@@ -15,7 +15,7 @@ public class BookDto {
 
     private Long id;
     private String name;
-    private Set<Long> authors;
+    private Set<AuthorDto> authors;
     private String genre;
     private String description;
     private int pageCount;

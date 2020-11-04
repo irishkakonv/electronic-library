@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -22,7 +23,8 @@ public class AuthorServiceImpl implements AuthorService {
     private final ConversionService conversionService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorRepository authorRepository, ConversionService conversionService) {
+    public AuthorServiceImpl(AuthorRepository authorRepository,
+                             ConversionService conversionService) {
         this.authorRepository = authorRepository;
         this.conversionService = conversionService;
     }
@@ -54,8 +56,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Set<AuthorDto> getAll() {
-        Set<Author> authors = new HashSet<>((Collection<? extends Author>) authorRepository.findAll());
-        return authors.stream().map(author -> conversionService.convert(author, AuthorDto.class)).collect(Collectors.toSet());
+        return StreamSupport.stream(authorRepository.findAll().spliterator(), false)
+                .map(author -> conversionService.convert(author, AuthorDto.class))
+                .collect(Collectors.toSet());
     }
 
     public void deleteAll() {

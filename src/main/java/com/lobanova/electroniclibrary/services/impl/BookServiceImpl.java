@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -22,7 +23,8 @@ public class BookServiceImpl implements BookService {
     private final ConversionService conversionService;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, ConversionService conversionService) {
+    public BookServiceImpl(BookRepository bookRepository,
+                           ConversionService conversionService) {
         this.bookRepository = bookRepository;
         this.conversionService = conversionService;
     }
@@ -54,8 +56,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Set<BookDto> getAll() {
-        Set<Book> books = new HashSet<>((Collection<? extends Book>) bookRepository.findAll());
-        return books.stream().map(book -> conversionService.convert(book, BookDto.class)).collect(Collectors.toSet());
+        return StreamSupport.stream(bookRepository.findAll().spliterator(), false)
+                .map(book -> conversionService.convert(book, BookDto.class))
+                .collect(Collectors.toSet());
     }
 
     public void deleteAll() {

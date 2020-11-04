@@ -1,5 +1,6 @@
 package com.lobanova.electroniclibrary.entities;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@EqualsAndHashCode(callSuper = true)
 abstract class Person extends EntityBase {
 
     @Column(name = "name", nullable = false)
